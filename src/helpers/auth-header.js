@@ -1,9 +1,10 @@
-import {authenticationService} from '@/services';
+import { authenticationService } from '@/services';
 
 export function authHeader() {
-	const currentUser = authenticationService.currrentUserValue;
-	if (currentUser && currentUser.token) {
-    return { Authorization: `Bearer ${currentUser.token}` };
-	}
-	return {};
+    const currentUser = authenticationService.currentUserValue;
+    if (currentUser && currentUser.token) {
+        return { Authorization: `Bearer ${currentUser.token}` };
+    } else {
+        return {};
+    }
 }
