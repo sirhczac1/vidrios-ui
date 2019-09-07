@@ -4,7 +4,7 @@ import { Router, Route, Link } from 'react-router-dom';
 import { history } from '@/helpers';
 import { authenticationService } from '@/services';
 import { PrivateRoute } from '@/components';
-import { HomePage } from '@/HomePage';
+import { HomePage } from '@/Pages';
 import { LoginPage } from '@/LoginPage';
 
 class App extends React.Component {
@@ -30,19 +30,30 @@ class App extends React.Component {
     return (
       <Router history={history}>
         <div>
-          {currentUser &&
+          {currentUser && currentUser.role === 'admin' &&
             <nav className="navbar navbar-expand navbar-dark bg-dark">
-              <div className="navbar-nav">
-                <Link to="/" className="nav-item nav-link">Home</Link>
-                <a onClick={this.logout} className="nav-item nav-link">Logout</a>
+              <div className="navbar-nav ml-auto">
+                <Link to="/" className="nav-item nav-link">Ventas</Link>
+                <Link to="/inventario" className="nav-item nav-link">Inventario</Link>
+                <Link to="/clientes" className="nav-item nav-link">Clientes</Link>
+                <Link to="/corte" className="nav-item nav-link">Corte</Link>
+                <a onClick={this.logout} className="nav-item nav-link">Salir</a>
               </div>
             </nav>
           }
+          {currentUser && currentUser.role != 'admin' &&
+            <nav className="navbar navbar-expand navbar-dark bg-dark">
+              <div className="navbar-nav ml-auto">
+                <Link to="/" className="nav-item nav-link">Ventas</Link>
+                <a onClick={this.logout} className="nav-item nav-link">Salir</a>
+              </div>
+            </nav>
+          }
+          <PrivateRoute exact path="/" component={HomePage} />
           <div className="jumbotron">
             <div className="container">
-              <div className="row">
-                <div className="col-md-6 offset-md-3">
-                  <PrivateRoute exact path="/" component={HomePage} />
+              <div className="row centerRow">
+                <div className="col-md-6">
                   <Route path="/login" component={LoginPage} />
                 </div>
               </div>

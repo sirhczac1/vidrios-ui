@@ -1,0 +1,13 @@
+.logo {
+	width: 125px;
+}
+
+.logoBan {
+	text-align: center;
+	height: 100%; 
+	border-bottom: 4px #325b80 solid;
+}
+
+.centerRow {
+	justify-content: center;
+}

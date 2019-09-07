@@ -1,5 +1,8 @@
 export function configureFakeBackend() {
-  let users = [{ id: 1, username: 'test', password: 'test', firstName: 'Test', lastName: 'User' }];
+  let users = [
+    { id: 1, username: 'admin', password: 'test', firstName: 'Test', lastName: 'User', role: 'admin' },
+    { id: 1, username: 'employee', password: 'test', firstName: 'Test', lastName: 'User', role: 'employee' }
+  ];
   let realFetch = window.fetch;
   window.fetch = function (url, opts) {
     const isLoggedIn = opts.headers['Authorization'] === 'Bearer fake-jwt-token';
@@ -17,7 +20,8 @@ export function configureFakeBackend() {
             username: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
-            token: 'fake-jwt-token'
+            token: 'fake-jwt-token',
+            role: user.role
           });
         }
 

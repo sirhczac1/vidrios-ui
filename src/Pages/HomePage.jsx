@@ -30,6 +30,7 @@ class HomePage extends React.Component {
               )}
             </ul>
           }
+      <div><h1>gola</h1></div>
   		</div>
   	);
   } 
