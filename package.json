@@ -7,9 +7,17 @@
     "dependencies": {
         "formik": "^1.5.2",
         "history": "^4.9.0",
+        "jQuery": "^1.7.4",
         "react": "^16.8.6",
+        "react-alert": "^5.5.0",
+        "react-bootstrap": "^1.0.0-beta.12",
+        "react-bootstrap-table": "^4.3.1",
+        "react-bootstrap-table-next": "^3.1.9",
+        "react-bootstrap-table2-paginator": "^2.1.0",
         "react-dom": "^16.8.6",
         "react-router-dom": "^5.0.0",
+        "react-select-search": "^0.9.6",
+        "react-toastify": "^5.3.2",
         "rxjs": "^6.3.3",
         "yup": "^0.27.0"
     },

@@ -6,6 +6,7 @@ import { authenticationService } from '@/services';
 import { PrivateRoute } from '@/components';
 import { HomePage } from '@/Pages';
 import { LoginPage } from '@/LoginPage';
+import { Navbar, Nav } from 'react-bootstrap';
 
 class App extends React.Component {
   constructor(props) {
@@ -31,25 +32,40 @@ class App extends React.Component {
       <Router history={history}>
         <div>
           {currentUser && currentUser.role === 'admin' &&
-            <nav className="navbar navbar-expand navbar-dark bg-dark">
-              <div className="navbar-nav ml-auto">
-                <Link to="/" className="nav-item nav-link">Ventas</Link>
-                <Link to="/inventario" className="nav-item nav-link">Inventario</Link>
-                <Link to="/clientes" className="nav-item nav-link">Clientes</Link>
-                <Link to="/corte" className="nav-item nav-link">Corte</Link>
-                <a onClick={this.logout} className="nav-item nav-link">Salir</a>
-              </div>
-            </nav>
+            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="mb-4">
+              <Navbar.Brand href="/">
+                <img src="public/VitrozaLogo.png" width="27" height="30" className="d-inline-block align-top brandLogo" alt="Vitroza"/>
+                Vitroza
+              </Navbar.Brand>
+              <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
+              <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="ml-auto">
+                  <Link to="/" className="nav-item nav-link">Ventas</Link>
+                  <Link to="/inventario" className="nav-item nav-link">Inventario</Link>
+                  <Link to="/clientes" className="nav-item nav-link">Clientes</Link>
+                  <Link to="/corte" className="nav-item nav-link">Corte</Link>
+                  <a onClick={this.logout} className="nav-item nav-link">Salir</a>
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
           }
           {currentUser && currentUser.role != 'admin' &&
-            <nav className="navbar navbar-expand navbar-dark bg-dark">
-              <div className="navbar-nav ml-auto">
-                <Link to="/" className="nav-item nav-link">Ventas</Link>
-                <a onClick={this.logout} className="nav-item nav-link">Salir</a>
-              </div>
-            </nav>
+            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="mb-4">
+              <Navbar.Brand href="/">
+                <img src="public/VitrozaLogo.png" width="27" height="30" className="d-inline-block align-top brandLogo" alt="Vitroza"/>
+                Vitroza
+              </Navbar.Brand>
+              <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
+              <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="ml-auto">
+                  <Link to="/" className="nav-item nav-link">Ventas</Link>
+                  <a onClick={this.logout} className="nav-item nav-link">Salir</a>
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
           }
           <PrivateRoute exact path="/" component={HomePage} />
+          { currentUser === null &&
           <div className="jumbotron">
             <div className="container">
               <div className="row centerRow">
@@ -59,6 +75,7 @@ class App extends React.Component {
               </div>
             </div>
           </div>
+          }
         </div>
       </Router>
     );
