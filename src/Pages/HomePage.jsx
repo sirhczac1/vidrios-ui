@@ -5,6 +5,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Button  } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import ReactToPrint from 'react-to-print';
 
 class HomePage extends React.Component {
 
@@ -158,7 +159,7 @@ class HomePage extends React.Component {
      };
 
     const paginationOptions = {
-      sizePerPage: 5,
+      sizePerPage: 8,
       showTotal: true,
       hideSizePerPage: true,
       hidePageListOnlyOnePage: true
@@ -239,22 +240,49 @@ class HomePage extends React.Component {
             <h4> Productos en venta </h4>
             </div>
           <div name="sellForm">
-              <Button variant="primary" className="float-right" onClick={ this.deleteProduct } >Eliminar producto</Button>
-              <BootstrapTable keyField="id" 
+            <Button variant="primary" className="float-right" onClick={ this.deleteProduct } >Eliminar producto</Button>
+            <BootstrapTable keyField="id" 
+              data={ products }
+              deleteRow
+              selectRow={ selectRowProp }
+              columns={ columns }
+              noDataIndication="No hay productos en venta"
+              hover
+              condensed
+              pagination={ paginationFactory(paginationOptions) }
+              />
+            </div>
+          <div id="printSection" className="printSection" ref={el => (this.componentRef = el)}>
+            <img src="public/VitrozaLogo.png" className="printLogo"></img>
+            <h2>Vitroza</h2>
+            <h5>Distribución de vidrio plano</h5>
+            <h6>Corregidora #1033 Col. Centro</h6>
+            <h6>Morelia Mich. C.P. 58000</h6>
+            <h6>Tel: 443 313 4997</h6>
+            <h6>e-mail: alejandrogonzalez@vitroza.com.mx</h6>
+            <br/>
+            <br/>
+            <label>Nombre del cliente: {this.state.customer}</label>
+            <br/>
+            <label>Descuento aplicado: {this.state.discount}%</label>
+            <div className="printTable">
+              <BootstrapTable
+                keyField="id" 
                 data={ products }
-                deleteRow
-                selectRow={ selectRowProp }
                 columns={ columns }
                 noDataIndication="No hay productos en venta"
-                hover
-                condensed
-                pagination={ paginationFactory(paginationOptions) }
                 />
+            </div>
           </div>
         </div>
         <div className="footer" name="sellTitle">
-          <Button variant="primary" className="float-right btn-lg" onClick={ this.deleteProduct } >Completar venta e imprimir nota</Button>
-          <Button variant="primary" className="float-right btn-lg brandLogo" onClick={ this.deleteProduct } >Completar venta</Button>
+          <ReactToPrint
+            onBeforeGetContent={() => {document.getElementById("printSection").style.display="block"}}
+            onAfterPrint={() => {document.getElementById("printSection").style.display="none"}}
+            trigger={() => <Button variant="primary" className="float-right btn-lg" onClick={ this.saveSellAndClean } >Completar venta e imprimir nota</Button>}
+            content={() => this.componentRef}
+          />
+          <Button variant="primary" className="float-right btn-lg brandLogo" onClick={ this.saveSellAndClean } >Completar venta</Button>
         </div>
       </div>
   	);
