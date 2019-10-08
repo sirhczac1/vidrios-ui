@@ -4,7 +4,7 @@ import { Router, Route, Link } from 'react-router-dom';
 import { history } from '@/helpers';
 import { authenticationService } from '@/services';
 import { PrivateRoute } from '@/components';
-import { HomePage, Inventario } from '@/Pages';
+import { HomePage, Inventario, Cliente} from '@/Pages';
 import { LoginPage } from '@/LoginPage';
 import { Navbar, Nav } from 'react-bootstrap';
 
@@ -66,6 +66,7 @@ class App extends React.Component {
           }
           <PrivateRoute exact path="/" component={HomePage} />
           <PrivateRoute exact path="/inventario" component={Inventario} />
+          <PrivateRoute exact path="/clientes" component={Cliente} />
           { currentUser === null &&
           <div className="jumbotron">
             <div className="container">

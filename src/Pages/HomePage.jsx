@@ -31,7 +31,9 @@ class HomePage extends React.Component {
       category: '',
       price: '',
       selected: [],
-      quantity: ''
+      quantity: '',
+      total: 0,
+      iva: 0
 		};
 
     this.addProduct = this.addProduct.bind(this);
@@ -43,16 +45,33 @@ class HomePage extends React.Component {
     this.onProductUpdate = this.onProductUpdate.bind(this);
     this.onQuantityUpdate = this.onQuantityUpdate.bind(this);
     this.onQuantityEnterKeyDown = this.onQuantityEnterKeyDown.bind(this);
+    this.calculateTotalAndIva = this.calculateTotalAndIva.bind(this);
 	}
   onQuantityEnterKeyDown(e) {
     if (e.key === 'Enter') {
       this.addProduct(e);
     }
   }
-	onQuantityUpdate(e) {this.setState({quantity : event.target.value}); }
-  componentDidMount() { userService.getAll().then(users => this.setState({ users })); }
-  onClientUpdate(e) { this.setState({discount:e.discount, customer: e.value}); }
-  onProductUpdate(e) { this.setState({category:e.category, selectedProduct: e.value, price: e.price}); }
+	onQuantityUpdate(e) {
+    this.setState({
+      quantity : e.target.value
+    }); 
+  }
+  componentDidMount() {
+    userService.getAll().then(
+      users => this.setState({ users })
+    ); 
+  }
+  onClientUpdate(e) {
+    this.setState({
+      discount:e.discount, customer: e.value
+    }); 
+  }
+  onProductUpdate(e) {
+    this.setState({
+      category:e.category, selectedProduct: e.value, price: e.price
+    }); 
+  }
   addProduct(context) {
     var products = this.state.products;
     var missingField = false;
@@ -77,10 +96,20 @@ class HomePage extends React.Component {
       price: this.state.price,
       category: this.state.category,
       quantity: this.state.quantity,
-      subTotal: this.state.price * this.state.quantity
+      appliedDiscount: this.state.discount + '%',
+      subTotal: ((this.state.price * this.state.quantity) * (100 - this.state.discount)) / 100
       } 
     );
     this.setState({products:products});
+    this.calculateTotalAndIva(products);
+  }
+  calculateTotalAndIva(products) {
+    var total = 0;
+    var iva;
+    for(var product in products) {
+      total += product.subTotal;
+    }
+    this.setState({total: total, iva: total*0.16});
   }
   deleteProduct(context) {
     var products = this.state.products;
@@ -118,14 +147,12 @@ class HomePage extends React.Component {
     }
   }
   onDiscountUpdate(event) { this.setState({discount : event.target.value}); }
-
   render() {
-
     const { currentUser, users, products, listProducts, customers} = this.state;
     const columns = [
       {
         dataField: 'id',
-        text: '#',
+        text: 'Id',
         footer:''
       }, {
         dataField: 'name',
@@ -138,15 +165,19 @@ class HomePage extends React.Component {
       }, {
         dataField: 'quantity',
         text: 'Cantidad',
-        footer:''
+        footer:'I.V.A.'
       }, {
         dataField: 'price',
         text: 'Precio Unitario',
+        footer: this.state.iva
+      },{
+        dataField: 'appliedDiscount',
+        text: 'Descuento Aplicado',
         footer:'Total Venta'
       }, {
         dataField: 'subTotal',
         text: 'Total',
-        footer: columnData => columnData.reduce((acc, item) => acc + item, 0)
+        footer: this.state.total
       }
       ];
     
@@ -164,6 +195,7 @@ class HomePage extends React.Component {
       hideSizePerPage: true,
       hidePageListOnlyOnePage: true
     };
+        var targetOfGreeting = "world";
 
   	return (
       <div>
@@ -229,7 +261,7 @@ class HomePage extends React.Component {
                 <div className="input-group-prepend">
                   <span className="input-group-text">Precio Unitario</span>
                 </div>
-                <input id="price" type="number" className="form-control" disabled value={this.state.price}/>
+                <input id="price" type="number" className="form-control" value={this.state.price}/>
               </div>
             </div>
             <div className="col float-right ">
@@ -251,6 +283,9 @@ class HomePage extends React.Component {
               condensed
               pagination={ paginationFactory(paginationOptions) }
               />
+            </div>
+            <div>
+              IVA: {targetOfGreeting}
             </div>
           <div id="printSection" className="printSection" ref={el => (this.componentRef = el)}>
             <img src="public/VitrozaLogo.png" className="printLogo"></img>

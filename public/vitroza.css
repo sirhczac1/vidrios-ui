@@ -1,5 +1,10 @@
 @import 'http://weloveiconfonts.com/api/?family=fontawesome';
 
+.separatorButtons {
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
 .printTable {
   width: 80%;
   margin-left: auto;
